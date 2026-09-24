@@ -26,12 +26,13 @@ MENTION_RE = re.compile(r"(?<!\w)@[A-Za-z0-9_]{4,}", re.IGNORECASE)
 def find_terabox_url(text: str):
     if not text:
         return None
-    for url in URL_RE.findall(text):
-        clean = url.rstrip(".,)]}>\"'")
-        host = urlparse(clean).netloc.lower()
-        if "terabox" in host or "1024tera" in host or "terabox" in clean.lower():
-            return clean
-    return None
+
+    urls = URL_RE.findall(text)
+
+    if not urls:
+        return None
+
+    return urls[0].rstrip(".,)]}>\"'")
 
 
 def clean_caption(original_text: str, terabox_url: str, fallback_name: str):
